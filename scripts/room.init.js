@@ -4,10 +4,11 @@ Room.prototype.init = function() {
   if (this.memory.init) return;
   this.memory.buildSites = [];
 
+  const terrain = Game.map.getRoomTerrain(this.name);
   var spawns = this.getSpawns();
   for (var x in spawns) {
     var spawn = spawns[x];
-    var sites = this.getTerrainAroundPoint(spawn.pos, 2);
+    var sites = this.getTerrainAroundPoint(terrain, spawn.pos, 2);
     for (var y in sites) {
       var site = sites[y];
       this.memory.buildSites.push({ pos : site , type : STRUCTURE_EXTENSION });
@@ -47,7 +48,7 @@ Room.prototype.init = function() {
   for (var i = 0; i < sources.length; i++) {
     var source = sources[i];
     var sourcePos = source.pos;
-    var sites = this.getTerrainAroundPoint(sourcePos, 1);
+    var sites = this.getTerrainAroundPoint(terrain, sourcePos, 1);
 
     this.memory.jobs.miner.sources.push({
       source : source.id,

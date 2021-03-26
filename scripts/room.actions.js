@@ -45,8 +45,7 @@ Room.prototype.isAtSite = function(pos) {
   return false;
 }
 
-Room.prototype.getTerrainAroundPoint = function(pos, range) {
-  const terrain = Game.map.getRoomTerrain(this.name);
+Room.prototype.getTerrainAroundPoint = function(terrain, pos, range) {
   var sites = []
   for (x = -1; x < 2; x++) {
     for (y = -1; y < 2; y++) {
@@ -61,8 +60,8 @@ Room.prototype.getTerrainAroundPoint = function(pos, range) {
   return sites;
 }
 
-Room.prototype.getTerrainAtPoint = function(pos) {
-  const terrain = Game.map.getRoomTerrain(this.name);
+Room.prototype.getTerrainAtPoint = function(terrain, pos) {
+  // const terrain = Game.map.getRoomTerrain(this.name);
   var point = terrain.get(pos.x + x * range, pos.y + y * range);
   return point;
 }
@@ -84,4 +83,11 @@ Room.prototype.updateJobCount = function() {
     this.memory.jobs[j].cur = cur;
     console.log(this.memory.jobs[j].cur);
   }
+}
+
+Room.prototype.scanPotentialSites = function() {
+  const terrain = Game.map.getRoomTerrain(this.name);
+  const level = this.controller.level;
+  const spawns = this.getSpawns();
+  const sources = this.find(FIND_SOURCES);
 }

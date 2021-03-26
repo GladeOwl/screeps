@@ -2,18 +2,7 @@ require('creep.actions');
 
 Creep.prototype.run = function() {
   var job = this.memory.role;
-
-  switch (job) {
-    case 'miner':
-      isIdle = this.miner();
-      break;
-    case 'upgrader':
-      isIdle = this.upgrader();
-      break;
-    case 'builder':
-      isIdle = this.builder();
-      break;
-  }
+  this[job]();
 
   if (this.ticksToLive < 10 && this.memory.alive) {
     for (var j in this.room.memory.jobs) {
@@ -37,6 +26,12 @@ Creep.prototype.run = function() {
     }
     this.memory.alive = false;
     console.log(`${this.name} is about to die. Rest in Peace`);
+  }
+
+  if (Game.time % 10 == 0) {
+    if (this.memory.isIdle) {
+      // Check for job vacancies.
+    }
   }
 }
 
@@ -89,11 +84,8 @@ Creep.prototype.builder = function() {
     }
   }
   else {
-    var buildSite = this.room.getSites();
-    if (buildSite.length > 0) {
-      if (this.build(buildSite[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-        this.build(buildSite[0], {visualizePathStyle : { stroke : '#ffaa00'}});
-      }
+    if (!this.buildSites()) {
+      // REPAIR
     }
   }
   this.memory.isIdle = false;
